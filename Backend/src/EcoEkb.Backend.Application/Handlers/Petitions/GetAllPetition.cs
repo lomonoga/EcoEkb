@@ -5,15 +5,15 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcoEkb.Backend.Application.Handlers.Petition;
+namespace EcoEkb.Backend.Application.Handlers.Petitions;
 
 public record GetAllPetition() : IRequest<List<PetitionResponse>>;
 
 public class GetAllPetitionHandler : IRequestHandler<GetAllPetition, List<PetitionResponse>>
 {
-    private readonly EcoNotificationsDbContext _context;
+    private readonly EcoEkbDbContext _context;
     
-    public GetAllPetitionHandler(EcoNotificationsDbContext context, IHashService hashService)
+    public GetAllPetitionHandler(EcoEkbDbContext context, IHashService hashService)
     {
         _context = context;
     }

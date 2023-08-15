@@ -1,21 +1,20 @@
-using EcoEkb.Backend.Application.Common.DTO;
+using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
-using EcoEkb.Backend.DataAccess.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcoEkb.Backend.Application.Handlers.Users;
+namespace EcoEkb.Backend.Application.Handlers.Auth;
 
 public record LoginUser(UserLoginRequest LoginRequest) : IRequest<User>;
 
 public class LoginUserHandler : IRequestHandler<LoginUser, User>
 {
-    private readonly EcoNotificationsDbContext _context;
+    private readonly EcoEkbDbContext _context;
     private readonly IHashService _hashService;
     
-    public LoginUserHandler(EcoNotificationsDbContext context, IHashService hashService)
+    public LoginUserHandler(EcoEkbDbContext context, IHashService hashService)
     {
         _context = context;
         _hashService = hashService;

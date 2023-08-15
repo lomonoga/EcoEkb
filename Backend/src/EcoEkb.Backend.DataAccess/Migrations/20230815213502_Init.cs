@@ -44,6 +44,7 @@ namespace EcoEkb.Backend.DataAccess.Migrations
                     Phone = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
+                    RefreshToken = table.Column<string>(type: "text", nullable: false),
                     Coins = table.Column<int>(type: "integer", nullable: false),
                     LastLogin = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Roles = table.Column<HashSet<string>>(type: "jsonb", nullable: false),

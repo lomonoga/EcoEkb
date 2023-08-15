@@ -16,10 +16,10 @@ public static class ConfigureServices
         services.AddScoped<ISecurityService, SecurityService>();
         services.AddSingleton<ITokenManager, JwtTokenManager>();
         services.AddSingleton<IHashService, HashService>();
-        services.AddDbContext<EcoNotificationsDbContext>(options =>
+        services.AddDbContext<EcoEkbDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString("def_connection"));
         });
-        services.AddScoped<EcoNotificationsDbContext>();
+        services.AddScoped<EcoEkbDbContext>();
     }
 }

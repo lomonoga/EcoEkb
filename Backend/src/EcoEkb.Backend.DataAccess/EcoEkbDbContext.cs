@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcoEkb.Backend.DataAccess;
 
-public class EcoNotificationsDbContext : DbContext
+public class EcoEkbDbContext : DbContext
 {
     private readonly ISecurityService _securityService;
-    public EcoNotificationsDbContext(DbContextOptions<EcoNotificationsDbContext> options, 
+    public EcoEkbDbContext(DbContextOptions<EcoEkbDbContext> options, 
         ISecurityService securityService) : base(options)
     {
         _securityService = securityService;
@@ -30,7 +30,7 @@ public class EcoNotificationsDbContext : DbContext
         }
 
         builder.Entity<User>().HasAlternateKey(x => x.Email);
-        builder.Entity<User>().HasAlternateKey(x => x.Phone);
+        //builder.Entity<User>().HasAlternateKey(x => x.Phone);
         
         base.OnModelCreating(builder);
     }

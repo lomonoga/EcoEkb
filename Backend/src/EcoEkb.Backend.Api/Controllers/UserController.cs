@@ -1,9 +1,7 @@
-using EcoEkb.Backend.Application.Common.DTO;
-using EcoEkb.Backend.Application.Common.DTO.Responses;
+using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Handlers.Users;
-using EcoEkb.Backend.DataAccess.Domain.Models;
+using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
-using EcoEkb.Backend.DataAccess.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +27,8 @@ public class UserController : ControllerBase
     
     /// <summary>
     ///     Позволяет добавить пользователя
-    ///     Телефон в формате 7xxx или 8xxx без "+" !!!
+    ///     Email должен быть верным!
+    ///     Пароль от 10 символов!
     /// </summary>
     /// <param name="userSaveRequest">Данные о пользователе</param>
     /// <response code="200">Добавление прошло успешно</response>
@@ -43,36 +42,8 @@ public class UserController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        try
-        {
-            await _mediator.Send(new SaveUser(userSaveRequest), token);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        await _mediator.Send(new SaveUser(userSaveRequest), token);
 
         return Ok();
-    }
-    
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody]UserLoginRequest userLoginRequest, CancellationToken token)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        
-        User user; 
-        try
-        {
-            user = await _mediator.Send(new LoginUser(userLoginRequest), token);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
-
-        var jwtToken = _tokenManager.GenerateToken(user);
-        
-        return Ok(new UserLoginResponse(jwtToken, ""));
     }
 }

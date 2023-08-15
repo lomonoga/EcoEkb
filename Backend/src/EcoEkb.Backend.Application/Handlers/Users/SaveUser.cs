@@ -1,5 +1,7 @@
 using EcoEkb.Backend.Application.Common.DTO;
+using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Enums;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
@@ -14,10 +16,10 @@ public record SaveUser(UserSaveRequest UserSaveRequest) : IRequest<UserResponse>
 
 public class SaveUserHandler : IRequestHandler<SaveUser, UserResponse>
 {
-    private readonly EcoNotificationsDbContext _context;
+    private readonly EcoEkbDbContext _context;
     private readonly IHashService _hashService;
     
-    public SaveUserHandler(EcoNotificationsDbContext context, IHashService hashService, ISecurityService securityService)
+    public SaveUserHandler(EcoEkbDbContext context, IHashService hashService)
     {
         _context = context;
         _hashService = hashService;
@@ -28,16 +30,17 @@ public class SaveUserHandler : IRequestHandler<SaveUser, UserResponse>
         // Mapping User
         var entityUser = request.UserSaveRequest.Adapt<User>();
         
-        // Hashing password 
-        entityUser.Password = _hashService.EncryptPassword(entityUser.Password);
-        
         // Check for the existence of a user
         var existedUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => 
-            u.Email == entityUser.Email || u.Phone == entityUser.Phone, cancellationToken);
+            ! u.IsDeleted
+            && u.Email == entityUser.Email, cancellationToken);
         if (existedUser is not null)
-            throw new Exception("Такой пользователь уже существет!");
+            throw new UserFriendlyException("Такой пользователь уже существет!");
         
+        // Hashing password and adding role of Client
+        entityUser.Password = _hashService.EncryptPassword(entityUser.Password);
         entityUser.Roles = new HashSet<string> { Role.Client.ToString() };
+        
         // Adding user
         var savedUser = (await _context.Users.AddAsync(entityUser, cancellationToken)).Entity;
         await _context.SaveChangesAsync(cancellationToken);

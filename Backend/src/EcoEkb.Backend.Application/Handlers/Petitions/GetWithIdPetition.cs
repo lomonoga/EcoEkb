@@ -1,5 +1,6 @@
 using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using Mapster;
 using MediatR;
@@ -12,9 +13,9 @@ public record GetWithIdPetition(Guid Id) : IRequest<PetitionResponse>;
 
 public class GetWithIdPetitionHandler : IRequestHandler<GetWithIdPetition, PetitionResponse>
 {
-    private readonly EcoNotificationsDbContext _context;
+    private readonly EcoEkbDbContext _context;
     
-    public GetWithIdPetitionHandler(EcoNotificationsDbContext context, IHashService hashService)
+    public GetWithIdPetitionHandler(EcoEkbDbContext context, IHashService hashService)
     {
         _context = context;
     }
@@ -24,7 +25,7 @@ public class GetWithIdPetitionHandler : IRequestHandler<GetWithIdPetition, Petit
         var petition = await _context.Petitions.AsNoTracking()
             .FirstOrDefaultAsync(pet => pet.Id == request.Id, cancellationToken);
         if (petition is null) 
-            throw new Exception("Обращения с таким ID не существует :(");
+            throw new UserFriendlyException("Обращения с таким ID не существует :(");
         return petition.Adapt<PetitionResponse>();
     }
 }

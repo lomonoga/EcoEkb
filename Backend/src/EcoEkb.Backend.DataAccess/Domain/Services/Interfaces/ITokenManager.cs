@@ -1,8 +1,7 @@
 using System.Security.Claims;
 using EcoEkb.Backend.DataAccess.Domain.Models;
-using EcoEkb.Backend.DataAccess.Models;
 
-namespace EcoEkb.Backend.DataAccess.Services.Interfaces;
+namespace EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 
 public interface ITokenManager
 {

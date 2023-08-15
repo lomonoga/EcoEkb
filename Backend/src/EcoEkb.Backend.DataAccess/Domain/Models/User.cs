@@ -6,11 +6,12 @@ namespace EcoEkb.Backend.DataAccess.Domain.Models;
 public class User : IEntity
 {
     public string FullName { get; set; }
-    public string Phone { get; set; }
+    public string? Phone { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public string? RefreshToken { get; set; }
     public int Coins { get; set; }
-    public DateTime LastLogin { get; set; }
+    public DateTime? LastLogin { get; set; }
     [Column(TypeName = "jsonb")] public HashSet<string> Roles { get; set; }
 
     #region Entity

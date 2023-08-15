@@ -14,11 +14,11 @@ public record AddPetition(PetitionFormRequest PetitionFormRequest) : IRequest<Pe
 
 public class AddPetitionHandler : IRequestHandler<AddPetition, PetitionResponse>
 {
-    private readonly EcoNotificationsDbContext _context;
+    private readonly EcoEkbDbContext _context;
     private readonly IHashService _hashService;
     private readonly ISendEmail _sendEmail;
     
-    public AddPetitionHandler(EcoNotificationsDbContext context, IHashService hashService, ISendEmail sendEmail)
+    public AddPetitionHandler(EcoEkbDbContext context, IHashService hashService, ISendEmail sendEmail)
     {
         _context = context;
         _hashService = hashService;

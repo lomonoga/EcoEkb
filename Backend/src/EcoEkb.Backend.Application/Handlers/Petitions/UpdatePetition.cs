@@ -1,6 +1,7 @@
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using Mapster;
 using MediatR;
@@ -12,9 +13,9 @@ public record UpdatePetition(PetitionStatusWithIdRequest Petition) : IRequest<Pe
 
 public class UpdatePetitionHandler : IRequestHandler<UpdatePetition, PetitionResponse>
 {
-    private readonly EcoNotificationsDbContext _context;
+    private readonly EcoEkbDbContext _context;
     
-    public UpdatePetitionHandler(EcoNotificationsDbContext context, IHashService hashService)
+    public UpdatePetitionHandler(EcoEkbDbContext context, IHashService hashService)
     {
         _context = context;
     }
@@ -25,7 +26,7 @@ public class UpdatePetitionHandler : IRequestHandler<UpdatePetition, PetitionRes
             .FirstOrDefaultAsync(pet => pet.Id == request.Petition.Id, cancellationToken);
         
         if (petition is null) 
-            throw new Exception("Обращения с таким ID не существует :(");
+            throw new UserFriendlyException("Обращения с таким ID не существует :(");
         
         petition.Status = request.Petition.Status;
         await _context.SaveChangesAsync(cancellationToken);

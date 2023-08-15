@@ -2,11 +2,7 @@ using EcoEkb.Backend.DataAccess.Enums;
 
 namespace EcoEkb.Backend.Application.Common.DTO.Responses;
 
-public sealed class PetitionResponse
+public sealed record PetitionResponse(string Description, Topic Topic, string Address, 
+    string CompanyName, StatusPetition Status)
 {
-    public string Description { get; set; }
-    public Topic Topic { get; set; }
-    public string Address { get; set; }
-    public string CompanyName { get; set; }
-    public StatusPetition Status { get; set; }
 }

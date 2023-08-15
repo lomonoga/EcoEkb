@@ -1,6 +1,6 @@
 using EcoEkb.Backend.Application.Common.DTO.Requests;
-using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.Application.Handlers.Petition;
+using EcoEkb.Backend.Application.Handlers.Petitions;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcoEkb.Backend.Api.Controllers;
 
-[Produces("application/json")]
 [ApiController]
+[Produces("application/json")]
 [Route("api/[controller]")]
 public class PetitionController : ControllerBase
 {
@@ -34,16 +34,9 @@ public class PetitionController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        PetitionResponse petition;
-        try
-        {
-            petition = await _mediator.Send(new AddPetition(petitionFormRequest), token);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
-
+        
+        var petition = await _mediator.Send(new AddPetition(petitionFormRequest), token);
+        
         return Ok(petition);
     }
     
@@ -59,16 +52,8 @@ public class PetitionController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        List<PetitionResponse> petition;
-        try
-        {
-            petition = await _mediator.Send(new GetAllPetition(), token);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
-
+        var petition = await _mediator.Send(new GetAllPetition(), token);
+        
         return Ok(petition);
     }
     
@@ -81,15 +66,7 @@ public class PetitionController : ControllerBase
     [HttpGet("get-with-id-petition")]
     public async Task<IActionResult> GetWithIdPetition(Guid id, CancellationToken token)
     {
-        PetitionResponse petition;
-        try
-        {
-            petition = await _mediator.Send(new GetWithIdPetition(id), token);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        var petition = await _mediator.Send(new GetWithIdPetition(id), token);
 
         return Ok(petition);
     }
@@ -105,15 +82,7 @@ public class PetitionController : ControllerBase
     public async Task<IActionResult> UpdateStatusPetition(PetitionStatusWithIdRequest request, 
         CancellationToken token)
     {
-        PetitionResponse updatedPetition;
-        try
-        {
-            updatedPetition = await _mediator.Send(new UpdatePetition(request), token);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
+        var updatedPetition = await _mediator.Send(new UpdatePetition(request), token);
     
         return Ok(updatedPetition);
     }

@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace EcoEkb.Backend.Application.Common.DTO;
+namespace EcoEkb.Backend.Application.Common.DTO.Requests;
 
 public class UserLoginRequest
 {
-    [EmailAddress(ErrorMessage = "Такая электронная почта недействительна")]
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public string? Email { get; set; }
+    public string? Password { get; set; }
+    public string? Token { get; set; }
+    public string? RefreshToken { get; set; }
+
 }
