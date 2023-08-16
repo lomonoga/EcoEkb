@@ -5,7 +5,6 @@ using EcoEkb.Backend.Application.Handlers.Auth;
 using EcoEkb.Backend.Application.Handlers.Users;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
-using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,19 +18,18 @@ public class AuthController : ControllerBase
     private readonly IMediator _mediator;
     private readonly ISecurityService _securityService;
     private readonly ITokenManager _tokenManager;
-    private readonly IHashService _hashService;
     
     public AuthController(IMediator mediator, ISecurityService securityService, 
-        ITokenManager tokenManager, IHashService hashService)
+        ITokenManager tokenManager)
     {
         _mediator = mediator;
         _securityService = securityService;
         _tokenManager = tokenManager;
-        _hashService = hashService;
     }
     
     /// <summary>
-    /// Если нет токенов, то их не передавать 
+    ///     Авторизация юзера через логин пароль / токены
+    ///     Если нет токенов, то их не передавать 
     /// </summary>
     /// <param name="request">Авторизационные данные</param>
     /// <param name="token"></param>
@@ -50,10 +48,7 @@ public class AuthController : ControllerBase
         }
         else if (request.Email is not null && request.Password is not null)
         {
-            user = await _mediator.Send(new GetUserByEmail(request.Email), token);
-            var hashedPassword = _hashService.EncryptPassword(request.Password);
-            if (user is null || (user.Password != request.Password && user.Password != hashedPassword))
-                return BadRequest("Введены некорректный пароль или имя пользователя");
+            user = await _mediator.Send(new LoginUser(request), token);
         }
         else
         {

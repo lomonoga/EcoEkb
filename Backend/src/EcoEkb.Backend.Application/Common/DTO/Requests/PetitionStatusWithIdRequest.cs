@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 

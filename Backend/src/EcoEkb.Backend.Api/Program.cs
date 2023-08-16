@@ -1,25 +1,16 @@
-using System.Text.Json.Serialization;
+using EcoEkb.Backend.Api;
 using EcoEkb.Backend.Application;
+using EcoEkb.Backend.Application.Common.Middlewares;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
 using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-
-builder.Services.AddEndpointsApiExplorer();
-
 //Add components
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddDataAccess(builder.Configuration);
-
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
-
-builder.Services.AddCors();
+builder.Services.AddApi(builder.Configuration);
 
 var app = builder.Build();
 
@@ -42,9 +33,9 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<UserRolesClaimsEnrichMiddleware>();
 
 app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
-app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+app.MapControllers();
 
 app.Run();

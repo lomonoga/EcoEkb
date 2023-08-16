@@ -1,3 +1,4 @@
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Enums;
 
 namespace EcoEkb.Backend.Application.Common.DTO.Responses;

@@ -1,4 +1,4 @@
-namespace EcoEkb.Backend.DataAccess.Enums;
+namespace EcoEkb.Backend.DataAccess.Domain.Enums;
 
 public enum Role
 {

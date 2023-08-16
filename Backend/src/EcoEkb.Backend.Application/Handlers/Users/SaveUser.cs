@@ -1,6 +1,7 @@
 using EcoEkb.Backend.Application.Common.DTO;
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Enums;

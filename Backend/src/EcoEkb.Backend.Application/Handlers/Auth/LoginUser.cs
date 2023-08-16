@@ -1,5 +1,6 @@
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using MediatR;
@@ -26,9 +27,10 @@ public class LoginUserHandler : IRequestHandler<LoginUser, User>
         if (request.LoginRequest.Email is null)
             throw new Exception("Такого пользователя не существует");
         var hashedPassword = _hashService.EncryptPassword(request.LoginRequest.Password);
-        var user = await _context.Users.FirstOrDefaultAsync(u => request.LoginRequest.Email == u.Email 
-                                                                 && hashedPassword == u.Password, cancellationToken);
-        if (user is null) throw new Exception("Такого пользователя не существует или неверные данные");
+        var user = await _context.Users.FirstOrDefaultAsync(u => request.LoginRequest.Email == u.Email
+            && (request.LoginRequest.Password == u.Password
+                || hashedPassword == u.Password), cancellationToken);
+        if (user is null) throw new UserFriendlyException("Такого пользователя не существует или неверные данные");
         
         // Changing time last login 
         user.LastLogin = DateTime.UtcNow.ToUniversalTime();

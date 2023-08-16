@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace EcoEkb.Backend.DataAccess.Services.Interfaces;
+namespace EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 
 public interface ISecurityService
 {

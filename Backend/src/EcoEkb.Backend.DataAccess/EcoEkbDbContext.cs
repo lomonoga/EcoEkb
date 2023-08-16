@@ -1,5 +1,6 @@
 using EcoEkb.Backend.DataAccess.Domain.Interfaces;
 using EcoEkb.Backend.DataAccess.Domain.Models;
+using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using EcoEkb.Backend.DataAccess.Models;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

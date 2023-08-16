@@ -1,7 +1,9 @@
+using EcoEkb.Backend.Application.Common.AuthAttribute;
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Handlers.Petition;
 using EcoEkb.Backend.Application.Handlers.Petitions;
-using EcoEkb.Backend.DataAccess.Services.Interfaces;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
+using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,7 @@ public class PetitionController : ControllerBase
     /// <param name="petitionFormRequest">Форма с заявкой</param>
     /// <returns>Информацию об оставленной заявке</returns>
     
+    [Authorize]
     [HttpPut("submit-petition")]
     public async Task<IActionResult> SubmitPetition([FromForm]PetitionFormRequest petitionFormRequest, 
         CancellationToken token)
@@ -45,7 +48,7 @@ public class PetitionController : ControllerBase
     /// </summary>
     /// <returns>Информация о всех существующих заявках</returns>
     [Authorize]
-    // Добавить проверку прав
+    [HasRoles(Role.Admin)]
     [HttpGet("get-all-petition")]
     public async Task<IActionResult> GetAllPetition(CancellationToken token)
     {
@@ -63,6 +66,7 @@ public class PetitionController : ControllerBase
     /// <param name="id">Id заявки</param>
     /// <returns>Заявка</returns>
     [Authorize]
+    [HasRoles(Role.Admin)]
     [HttpGet("get-with-id-petition")]
     public async Task<IActionResult> GetWithIdPetition(Guid id, CancellationToken token)
     {
@@ -77,7 +81,7 @@ public class PetitionController : ControllerBase
     /// <param name="request">Запрос с ID и статусом заявки</param>
     /// <returns>Обновленная заявка</returns>
     [Authorize]
-    // Добавить проверку прав
+    [HasRoles(Role.Admin)]
     [HttpPost("update-status-with-id-petition")]
     public async Task<IActionResult> UpdateStatusPetition(PetitionStatusWithIdRequest request, 
         CancellationToken token)

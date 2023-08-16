@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using EcoEkb.Backend.DataAccess.Services.Interfaces;
+using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace EcoEkb.Backend.DataAccess.Domain.Services;

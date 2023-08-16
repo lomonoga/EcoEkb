@@ -1,6 +1,7 @@
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using EcoEkb.Backend.DataAccess.Enums;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;

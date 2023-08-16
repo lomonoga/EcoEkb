@@ -1,8 +1,8 @@
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Handlers.Users;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
-using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoEkb.Backend.Api.Controllers;
@@ -45,5 +45,29 @@ public class UserController : ControllerBase
         await _mediator.Send(new SaveUser(userSaveRequest), token);
 
         return Ok();
+    }
+    
+    #region Swagger
+    
+    /// <summary>
+    ///     Позволяет редактировать пользователя
+    ///     Передавать лишь те поля, которые вы хотите изменить! 
+    /// </summary>
+    /// <param name="userSaveRequest">Данные о пользователе</param>
+    /// <response code="200">Редактирование прошло успешно</response>
+    /// <response code="400">Произошла ошибка редактирования</response>
+    
+    #endregion
+    
+    [Authorize]
+    [HttpPost("edit-user")]
+    public async Task<IActionResult> EditUser([FromBody]UserEditRequest userSaveRequest, CancellationToken token)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        var editedUser = await _mediator.Send(new EditUser(userSaveRequest), token);
+
+        return Ok(editedUser);
     }
 }
