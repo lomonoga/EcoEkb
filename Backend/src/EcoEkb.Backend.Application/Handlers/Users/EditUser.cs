@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using EcoEkb.Backend.Application.Common.DTO;
 using EcoEkb.Backend.Application.Common.DTO.Requests;
+using EcoEkb.Backend.Application.Common.DTO.User.Requests;
+using EcoEkb.Backend.Application.Common.DTO.User.Responses;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;

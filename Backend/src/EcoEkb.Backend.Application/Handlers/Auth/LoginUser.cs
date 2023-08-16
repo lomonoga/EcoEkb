@@ -1,4 +1,5 @@
 using EcoEkb.Backend.Application.Common.DTO.Requests;
+using EcoEkb.Backend.Application.Common.DTO.User.Requests;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;

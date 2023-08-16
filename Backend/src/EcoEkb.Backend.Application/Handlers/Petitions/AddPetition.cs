@@ -3,7 +3,6 @@ using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
-using EcoEkb.Backend.DataAccess.Enums;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using Mapster;
 using MediatR;
@@ -11,22 +10,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcoEkb.Backend.Application.Handlers.Petition;
 
-public record AddPetition(PetitionFormRequest PetitionFormRequest) : IRequest<PetitionResponse>;
+public record AddPetition(PetitionFormRequest PetitionFormRequest) : IRequest<Unit>;
 
-public class AddPetitionHandler : IRequestHandler<AddPetition, PetitionResponse>
+public class AddPetitionHandler : IRequestHandler<AddPetition, Unit>
 {
     private readonly EcoEkbDbContext _context;
-    private readonly IHashService _hashService;
     private readonly ISendEmail _sendEmail;
     
-    public AddPetitionHandler(EcoEkbDbContext context, IHashService hashService, ISendEmail sendEmail)
+    public AddPetitionHandler(EcoEkbDbContext context, ISendEmail sendEmail)
     {
         _context = context;
-        _hashService = hashService;
+
         _sendEmail = sendEmail;
     }
     
-    public async Task<PetitionResponse> Handle(AddPetition request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(AddPetition request, CancellationToken cancellationToken)
     {
         var entityPetition = request.PetitionFormRequest.Adapt<DataAccess.Models.Petition>();
         entityPetition.Status = StatusPetition.New;
@@ -38,6 +36,6 @@ public class AddPetitionHandler : IRequestHandler<AddPetition, PetitionResponse>
         await _sendEmail.SendEmailAsync("bizi1298@gmail.com", 
             savedPetition.Entity.Topic.ToString(), savedPetition.Entity.Address);
             
-        return savedPetition.Adapt<PetitionResponse>();
+        return Unit.Value;
     }
 }

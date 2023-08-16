@@ -1,11 +1,14 @@
 ﻿using System.Security.Claims;
-using EcoEkb.Backend.Application.Common.DTO.Requests;
-using EcoEkb.Backend.Application.Common.DTO.Responses;
+using EcoEkb.Backend.Application.Common.DTO.User.Requests;
+using EcoEkb.Backend.Application.Common.DTO.User.Responses;
 using EcoEkb.Backend.Application.Handlers.Auth;
 using EcoEkb.Backend.Application.Handlers.Users;
+using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
+using Mapster;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoEkb.Backend.Api.Controllers;
@@ -60,5 +63,29 @@ public class AuthController : ControllerBase
         var jwtToken = _tokenManager.GenerateToken(user);
         await _mediator.Send(new UpdateUserRefreshToken(user.Id!.Value, refreshToken), token);
         return Ok(new UserLoginResponse(jwtToken, refreshToken, expiresAt));
+    }
+    
+    #region SwaggerDoc
+
+    /// <summary>
+    ///     Получить данные о текущем пользователе.
+    /// </summary>
+    /// <response code="200">Информация о текущем пользователе</response>
+    /// <response code="400">Ошибка</response>
+
+    #endregion
+
+    [Authorize]
+    [HttpPost("get-info")]
+    public async Task<IActionResult> GetInfo(CancellationToken token)
+    {
+        var user = _securityService.GetCurrentUser();
+        if (user is null)
+            throw new UserFriendlyException("Ошибка наличия пользователя");
+        
+        var userDb = await _mediator.Send(
+            new GetUserById(new Guid(user.FindFirstValue(ClaimTypes.Sid)!)), token);
+
+        return Ok(userDb.Adapt<UserResponse>());
     }
 }

@@ -1,4 +1,4 @@
-using EcoEkb.Backend.Application.Common.DTO.Requests;
+using EcoEkb.Backend.Application.Common.DTO.User.Requests;
 using EcoEkb.Backend.Application.Handlers.Users;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using MediatR;
@@ -14,13 +14,11 @@ public class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ISecurityService _securityService;
-    private readonly ITokenManager _tokenManager;
 
-    public UserController(IMediator mediator, ISecurityService securityService, ITokenManager tokenManager)
+    public UserController(IMediator mediator, ISecurityService securityService)
     {
         _mediator = mediator;
         _securityService = securityService;
-        _tokenManager = tokenManager;
     }
 
     #region Swagger
@@ -30,19 +28,19 @@ public class UserController : ControllerBase
     ///     Email должен быть верным!
     ///     Пароль от 10 символов!
     /// </summary>
-    /// <param name="userSaveRequest">Данные о пользователе</param>
+    /// <param name="request">Данные о пользователе</param>
     /// <response code="200">Добавление прошло успешно</response>
     /// <response code="400">Такой пользователь уже зарегистрирован</response>
     
     #endregion
     
     [HttpPut("add-user")]
-    public async Task<IActionResult> AddUser([FromBody]UserSaveRequest userSaveRequest, CancellationToken token)
+    public async Task<IActionResult> AddUser([FromBody]UserAddRequest request, CancellationToken token)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        await _mediator.Send(new SaveUser(userSaveRequest), token);
+        await _mediator.Send(new AddUser(request), token);
 
         return Ok();
     }
@@ -53,7 +51,7 @@ public class UserController : ControllerBase
     ///     Позволяет редактировать пользователя
     ///     Передавать лишь те поля, которые вы хотите изменить! 
     /// </summary>
-    /// <param name="userSaveRequest">Данные о пользователе</param>
+    /// <param name="request">Данные о пользователе</param>
     /// <response code="200">Редактирование прошло успешно</response>
     /// <response code="400">Произошла ошибка редактирования</response>
     
@@ -61,13 +59,36 @@ public class UserController : ControllerBase
     
     [Authorize]
     [HttpPost("edit-user")]
-    public async Task<IActionResult> EditUser([FromBody]UserEditRequest userSaveRequest, CancellationToken token)
+    public async Task<IActionResult> EditUser([FromBody]UserEditRequest request, CancellationToken token)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        var editedUser = await _mediator.Send(new EditUser(userSaveRequest), token);
+        var editedUser = await _mediator.Send(new EditUser(request), token);
 
         return Ok(editedUser);
+    }
+    
+    #region Swagger
+    
+    /// <summary>
+    ///     Позволяет удалить пользователя по Id
+    /// </summary>
+    /// <param name="userId">Id пользователя</param>
+    /// <response code="200">Удаление прошло успешно</response>
+    /// <response code="400">Произошла ошибка удаления</response>
+    
+    #endregion
+    
+    [Authorize]
+    [HttpDelete("delete-user")]
+    public async Task<IActionResult> DeleteUser(CancellationToken token)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        await _mediator.Send(new DeleteUser(), token);
+
+        return Ok();
     }
 }

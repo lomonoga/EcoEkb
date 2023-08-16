@@ -1,4 +1,5 @@
-﻿using EcoEkb.Backend.DataAccess;
+﻿using EcoEkb.Backend.Application.Common.DTO.Requests;
+using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserById, User>
     }
     
     /// <summary>
-    /// Получение НЕ УДАЛЁННОГО юзера из бд по Id
+    /// Получение не удалённого юзера из бд по Id
     /// !!! Если не существует то выдает null !!!
     /// </summary>
     /// <param name="request">Id</param>

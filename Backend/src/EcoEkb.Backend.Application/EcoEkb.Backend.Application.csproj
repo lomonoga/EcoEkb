@@ -15,5 +15,9 @@
     <ItemGroup>
         <ProjectReference Include="..\EcoEkb.Backend.DataAccess\EcoEkb.Backend.DataAccess.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\DTO\Admin\Responses\" />
+    </ItemGroup>
     
 </Project>

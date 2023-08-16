@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EcoEkb.Backend.Application.Common.DTO.Requests;
+namespace EcoEkb.Backend.Application.Common.DTO.User.Requests;
 
 public class UserEditRequest
 {

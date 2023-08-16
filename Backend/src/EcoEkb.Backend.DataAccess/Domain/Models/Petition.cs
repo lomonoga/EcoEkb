@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Interfaces;
 using EcoEkb.Backend.DataAccess.Domain.Models;
-using EcoEkb.Backend.DataAccess.Enums;
 
 namespace EcoEkb.Backend.DataAccess.Models;
 

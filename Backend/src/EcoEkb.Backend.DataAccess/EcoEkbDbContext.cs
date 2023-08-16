@@ -19,6 +19,7 @@ public class EcoEkbDbContext : DbContext
 
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<Petition> Petitions { get; set; } = default!;
+    public DbSet<Company> Companies { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -79,11 +80,11 @@ public class EcoEkbDbContext : DbContext
                 case EntityState.Deleted:
                     break;
                 case EntityState.Modified:
-                    entry.Entity.ModifiedBy = user?.Identity?.Name ?? "Admin";
+                    entry.Entity.ModifiedBy = user?.Identity?.Name ?? "System";
                     break;
                 case EntityState.Added:
-                    entry.Entity.ModifiedBy = user?.Identity?.Name ?? "Admin";
-                    entry.Entity.CreatedBy = user?.Identity?.Name ?? "Admin";
+                    entry.Entity.ModifiedBy = user?.Identity?.Name ?? "System";
+                    entry.Entity.CreatedBy = user?.Identity?.Name ?? "System";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

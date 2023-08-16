@@ -3,7 +3,6 @@ using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Handlers.Petition;
 using EcoEkb.Backend.Application.Handlers.Petitions;
 using EcoEkb.Backend.DataAccess.Domain.Enums;
-using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,31 +15,29 @@ namespace EcoEkb.Backend.Api.Controllers;
 public class PetitionController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ISecurityService _securityService;
     
-    public PetitionController(IMediator mediator, ISecurityService securityService)
+    public PetitionController(IMediator mediator)
     {
         _mediator = mediator;
-        _securityService = securityService;
     }
     
     /// <summary>
     ///     Позволяет оставить заявку
     /// </summary>
-    /// <param name="petitionFormRequest">Форма с заявкой</param>
+    /// <param name="request">Форма с заявкой</param>
     /// <returns>Информацию об оставленной заявке</returns>
     
     [Authorize]
     [HttpPut("submit-petition")]
-    public async Task<IActionResult> SubmitPetition([FromForm]PetitionFormRequest petitionFormRequest, 
+    public async Task<IActionResult> SubmitPetition([FromForm]PetitionFormRequest request, 
         CancellationToken token)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        var petition = await _mediator.Send(new AddPetition(petitionFormRequest), token);
+        await _mediator.Send(new AddPetition(request), token);
         
-        return Ok(petition);
+        return Ok();
     }
     
     /// <summary>

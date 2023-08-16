@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Models;
-using EcoEkb.Backend.DataAccess.Enums;
 
 namespace EcoEkb.Backend.Application.Common.DTO.Requests;
 
