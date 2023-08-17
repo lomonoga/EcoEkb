@@ -17,7 +17,7 @@ dotnet ef migrations add Init --context EcoEkbDbContext --project EcoEkb.Backend
 ```
 * И обновите базу данных:
 ```
-dotnet ef database update --context EcoNotificationsDbContext --project EcoEkb.Backend.DataAccess --startup-project EcoEkb.Backend.Api
+dotnet ef database update --context EcoEkbDbContext --project EcoEkb.Backend.DataAccess --startup-project EcoEkb.Backend.Api
 ```
 
 База данных готова к использованию! 
