@@ -72,7 +72,7 @@ public class UserController : ControllerBase
     #region Swagger
     
     /// <summary>
-    ///     Позволяет удалить пользователя по Id
+    ///     Позволяет удалить текущего пользователя
     /// </summary>
     /// <param name="userId">Id пользователя</param>
     /// <response code="200">Удаление прошло успешно</response>
