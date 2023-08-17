@@ -76,7 +76,7 @@ public class AuthController : ControllerBase
     #endregion
 
     [Authorize]
-    [HttpPost("get-info")]
+    [HttpGet("get-info")]
     public async Task<IActionResult> GetInfo(CancellationToken token)
     {
         var user = _securityService.GetCurrentUser();
