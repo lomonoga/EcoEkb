@@ -1,5 +1,6 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+ENV DOTNET_URLS=http://+:80
 WORKDIR /source
 COPY . .
 RUN dotnet restore "./src/EcoEkb.Backend.Api/EcoEkb.Backend.Api.csproj"
