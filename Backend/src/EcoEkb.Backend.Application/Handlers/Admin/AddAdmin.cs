@@ -6,6 +6,7 @@ using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;
+using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using Mapster;
 using MediatR;
@@ -19,11 +20,13 @@ public class AddAdminHandler : IRequestHandler<AddAdmin, Unit>
 {
     private readonly EcoEkbDbContext _context;
     private readonly IHashService _hashService;
+    private readonly ISecurityService _securityService;
     
-    public AddAdminHandler(EcoEkbDbContext context, IHashService hashService)
+    public AddAdminHandler(EcoEkbDbContext context, IHashService hashService, ISecurityService securityService)
     {
         _context = context;
         _hashService = hashService;
+        _securityService = securityService;
     }
     
     public async Task<Unit> Handle(AddAdmin request, CancellationToken cancellationToken)
@@ -50,12 +53,15 @@ public class AddAdminHandler : IRequestHandler<AddAdmin, Unit>
             existedUser.Phone = entityUser.Phone;
             existedUser.RefreshToken = null;
             existedUser.Coins = 0;
+            existedUser.CreatedOn = DateTime.UtcNow.ToUniversalTime();
+            existedUser.CreatedBy = _securityService.GetCurrentUser()?.Identity?.Name ?? "System";
             existedUser.IsDeleted = false;
         }
         else
             await _context.Users.AddAsync(entityUser, cancellationToken);
         
         await _context.SaveChangesAsync(cancellationToken);
+        _context.Entry(entityUser).State = EntityState.Detached;
 
         return Unit.Value;
     }

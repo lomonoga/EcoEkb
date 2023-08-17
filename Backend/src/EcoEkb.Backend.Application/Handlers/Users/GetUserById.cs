@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.DataAccess;
+using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,6 @@ public class GetUserByIdHandler : IRequestHandler<GetUserById, User>
     
     /// <summary>
     /// Получение не удалённого юзера из бд по Id
-    /// !!! Если не существует то выдает null !!!
     /// </summary>
     /// <param name="request">Id</param>
     /// <param name="cancellationToken"></param>
@@ -32,6 +32,9 @@ public class GetUserByIdHandler : IRequestHandler<GetUserById, User>
         var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => 
             ! u.IsDeleted 
             && request.Id == u.Id, cancellationToken);
+        
+        if (user is null) throw new UserFriendlyException("Такого пользователя не существует, либо он удалён");
+        
         return user;
     }
 }

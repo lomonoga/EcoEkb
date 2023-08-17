@@ -14,8 +14,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EcoEkb.Backend.DataAccess.Migrations
 {
     [DbContext(typeof(EcoEkbDbContext))]
-    [Migration("20230816212647_Update01")]
-    partial class Update01
+    [Migration("20230817115123_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,69 @@ namespace EcoEkb.Backend.DataAccess.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("EcoEkb.Backend.DataAccess.Domain.Models.Event", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<List<long>>("ActualParticipantsCount")
+                        .IsRequired()
+                        .HasColumnType("bigint[]");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatorId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<List<Guid>>("ExpectedParticipantsIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("PlaceCoordinates")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("PointsForParticipance")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Events");
+                });
+
             modelBuilder.Entity("EcoEkb.Backend.DataAccess.Domain.Models.User", b =>
                 {
                     b.Property<Guid?>("Id")
@@ -95,6 +158,9 @@ namespace EcoEkb.Backend.DataAccess.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("EventId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -129,6 +195,8 @@ namespace EcoEkb.Backend.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Email");
+
+                    b.HasIndex("EventId");
 
                     b.ToTable("Users");
                 });
@@ -181,6 +249,18 @@ namespace EcoEkb.Backend.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Petitions");
+                });
+
+            modelBuilder.Entity("EcoEkb.Backend.DataAccess.Domain.Models.User", b =>
+                {
+                    b.HasOne("EcoEkb.Backend.DataAccess.Domain.Models.Event", null)
+                        .WithMany("ResponsiblePersons")
+                        .HasForeignKey("EventId");
+                });
+
+            modelBuilder.Entity("EcoEkb.Backend.DataAccess.Domain.Models.Event", b =>
+                {
+                    b.Navigation("ResponsiblePersons");
                 });
 #pragma warning restore 612, 618
         }

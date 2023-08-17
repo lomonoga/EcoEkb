@@ -1,7 +1,4 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using EcoEkb.Backend.Application.Common.DTO.User.Requests;
 using EcoEkb.Backend.Application.Common.DTO.User.Responses;
 using EcoEkb.Backend.Application.Handlers.Auth;

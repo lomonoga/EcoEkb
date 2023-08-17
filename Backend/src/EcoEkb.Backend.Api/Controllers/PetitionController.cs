@@ -1,9 +1,7 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using EcoEkb.Backend.Application.Common.AuthAttribute;
 using EcoEkb.Backend.Application.Common.DTO.Petition.Requests;
 using EcoEkb.Backend.Application.Common.DTO.Requests;
+using EcoEkb.Backend.Application.Handlers.Petition;
 using EcoEkb.Backend.Application.Handlers.Petitions;
 using EcoEkb.Backend.DataAccess.Domain.Enums;
 using MediatR;
@@ -31,7 +29,7 @@ public class PetitionController : ControllerBase
     /// <returns>Информацию об оставленной заявке</returns>
     
     [Authorize]
-    [HttpPut("submit-petition")]
+    [HttpPut("add-petition")]
     public async Task<IActionResult> SubmitPetition([FromForm]PetitionFormRequest request, 
         CancellationToken token)
     {
@@ -49,13 +47,13 @@ public class PetitionController : ControllerBase
     /// <returns>Информация о всех существующих заявках</returns>
     [Authorize]
     [HasRoles(Role.Admin)]
-    [HttpGet("get-all-petition")]
-    public async Task<IActionResult> GetAllPetition(CancellationToken token)
+    [HttpGet("get-all-petitions")]
+    public async Task<IActionResult> GetAllPetitions(CancellationToken token)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        var petition = await _mediator.Send(new GetAllPetition(), token);
+        var petition = await _mediator.Send(new GetAllPetitions(), token);
         
         return Ok(petition);
     }
@@ -67,9 +65,12 @@ public class PetitionController : ControllerBase
     /// <returns>Заявка</returns>
     [Authorize]
     [HasRoles(Role.Admin)]
-    [HttpGet("get-with-id-petition")]
+    [HttpGet("get-petition-by-id")]
     public async Task<IActionResult> GetWithIdPetition(Guid id, CancellationToken token)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var petition = await _mediator.Send(new GetWithIdPetition(id), token);
 
         return Ok(petition);
@@ -82,12 +83,33 @@ public class PetitionController : ControllerBase
     /// <returns>Обновленная заявка</returns>
     [Authorize]
     [HasRoles(Role.Admin)]
-    [HttpPost("update-status-with-id-petition")]
+    [HttpPost("update-status-petition-by-id")]
     public async Task<IActionResult> UpdateStatusPetition(PetitionStatusWithIdRequest request, 
         CancellationToken token)
     {
-        var updatedPetition = await _mediator.Send(new UpdatePetition(request), token);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        var updatedPetition = await _mediator.Send(new UpdatePetitionStatus(request), token);
     
         return Ok(updatedPetition);
+    }
+    
+    /// <summary>
+    ///     Удаляет заявку по Id
+    /// </summary>
+    /// <param name="request">Запрос с ID и статусом заявки</param>
+    /// <returns>Обновленная заявка</returns>
+    [Authorize]
+    [HasRoles(Role.Admin)]
+    [HttpDelete("delete-petition-by-id")]
+    public async Task<IActionResult> DeletePetition(Guid request, CancellationToken token)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        await _mediator.Send(new DeletePetitionWithId(request), token);
+    
+        return Ok();
     }
 }

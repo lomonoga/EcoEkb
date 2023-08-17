@@ -26,9 +26,11 @@ public class GetWithIdPetitionHandler : IRequestHandler<GetWithIdPetition, Petit
     public async Task<PetitionResponse> Handle(GetWithIdPetition request, CancellationToken cancellationToken)
     {
         var petition = await _context.Petitions.AsNoTracking()
-            .FirstOrDefaultAsync(pet => pet.Id == request.Id, cancellationToken);
+            .FirstOrDefaultAsync(pet => pet.Id == request.Id 
+                                        && !pet.IsDeleted,cancellationToken);
+        
         if (petition is null) 
-            throw new UserFriendlyException("Обращения с таким ID не существует :(");
+            throw new UserFriendlyException("Обращение с таким ID не существует или она удалена :(");
         return petition.Adapt<PetitionResponse>();
     }
 }

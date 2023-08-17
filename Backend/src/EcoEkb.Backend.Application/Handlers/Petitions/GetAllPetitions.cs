@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcoEkb.Backend.Application.Handlers.Petitions;
 
-public record GetAllPetition() : IRequest<List<PetitionResponse>>;
+public record GetAllPetitions() : IRequest<List<PetitionResponse>>;
 
-public class GetAllPetitionHandler : IRequestHandler<GetAllPetition, List<PetitionResponse>>
+public class GetAllPetitionHandler : IRequestHandler<GetAllPetitions, List<PetitionResponse>>
 {
     private readonly EcoEkbDbContext _context;
     
@@ -21,10 +21,13 @@ public class GetAllPetitionHandler : IRequestHandler<GetAllPetition, List<Petiti
         _context = context;
     }
     
-    public async Task<List<PetitionResponse>> Handle(GetAllPetition request, CancellationToken cancellationToken)
+    public async Task<List<PetitionResponse>> Handle(GetAllPetitions request, CancellationToken cancellationToken)
     {
-        var allPetition = await _context.Petitions.AsNoTracking().ToListAsync(cancellationToken);
-
+        var allPetition = await _context.Petitions
+            .AsNoTracking()
+            .Where(pet => !pet.IsDeleted)
+            .ToListAsync(cancellationToken);
+        
         return allPetition.Adapt<List<PetitionResponse>>();
     }
 }

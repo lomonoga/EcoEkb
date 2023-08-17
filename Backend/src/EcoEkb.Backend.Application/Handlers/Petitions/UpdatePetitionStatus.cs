@@ -1,7 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
 using EcoEkb.Backend.Application.Common.DTO.Petition.Requests;
-using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
@@ -10,11 +7,11 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcoEkb.Backend.Application.Handlers.Petitions;
+namespace EcoEkb.Backend.Application.Handlers.Petition;
 
-public record UpdatePetition(PetitionStatusWithIdRequest Petition) : IRequest<PetitionResponse>;
+public record UpdatePetitionStatus(PetitionStatusWithIdRequest Petition) : IRequest<PetitionResponse>;
 
-public class UpdatePetitionHandler : IRequestHandler<UpdatePetition, PetitionResponse>
+public class UpdatePetitionHandler : IRequestHandler<UpdatePetitionStatus, PetitionResponse>
 {
     private readonly EcoEkbDbContext _context;
     
@@ -23,10 +20,11 @@ public class UpdatePetitionHandler : IRequestHandler<UpdatePetition, PetitionRes
         _context = context;
     }
     
-    public async Task<PetitionResponse> Handle(UpdatePetition request, CancellationToken cancellationToken)
+    public async Task<PetitionResponse> Handle(UpdatePetitionStatus request, CancellationToken cancellationToken)
     {
         var petition = await _context.Petitions
-            .FirstOrDefaultAsync(pet => pet.Id == request.Petition.Id, cancellationToken);
+            .FirstOrDefaultAsync(pet => pet.Id == request.Petition.Id 
+                                        && !pet.IsDeleted, cancellationToken);
         
         if (petition is null) 
             throw new UserFriendlyException("Обращения с таким ID не существует :(");
