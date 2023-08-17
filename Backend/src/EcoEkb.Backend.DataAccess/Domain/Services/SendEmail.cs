@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 
 namespace EcoEkb.Backend.DataAccess.Domain.Services;

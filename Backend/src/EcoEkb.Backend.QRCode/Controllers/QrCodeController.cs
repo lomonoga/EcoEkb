@@ -1,4 +1,7 @@
+using System;
+using System.Net.Http;
 using System.Net.Mime;
+using System.Threading.Tasks;
 using EcoEkb.Backend.QRCode.DTO;
 using Microsoft.AspNetCore.Mvc;
 

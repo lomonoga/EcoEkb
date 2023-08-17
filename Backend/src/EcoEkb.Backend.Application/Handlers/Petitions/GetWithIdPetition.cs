@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
@@ -6,7 +9,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcoEkb.Backend.Application.Handlers.Petition;
+namespace EcoEkb.Backend.Application.Handlers.Petitions;
 
 
 public record GetWithIdPetition(Guid Id) : IRequest<PetitionResponse>;

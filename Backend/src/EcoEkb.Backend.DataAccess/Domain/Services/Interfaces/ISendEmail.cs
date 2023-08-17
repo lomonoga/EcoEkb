@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 
 public interface ISendEmail

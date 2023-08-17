@@ -1,4 +1,5 @@
-﻿using EcoEkb.Backend.DataAccess.Domain.Enums;
+﻿using System;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Interfaces;
 
 namespace EcoEkb.Backend.DataAccess.Domain.Models;

@@ -1,4 +1,5 @@
-﻿using EcoEkb.Backend.DataAccess.Domain.Enums;
+﻿using System.Linq;
+using EcoEkb.Backend.DataAccess.Domain.Enums;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

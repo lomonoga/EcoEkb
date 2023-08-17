@@ -1,3 +1,6 @@
+using System.Threading;
+using System.Threading.Tasks;
+using EcoEkb.Backend.Application.Common.DTO.Petition.Requests;
 using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Common.DTO.Responses;
 using EcoEkb.Backend.DataAccess;
@@ -7,7 +10,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcoEkb.Backend.Application.Handlers.Petition;
+namespace EcoEkb.Backend.Application.Handlers.Petitions;
 
 public record UpdatePetition(PetitionStatusWithIdRequest Petition) : IRequest<PetitionResponse>;
 

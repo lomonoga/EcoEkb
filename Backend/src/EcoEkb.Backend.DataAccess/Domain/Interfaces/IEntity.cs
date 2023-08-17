@@ -1,3 +1,5 @@
+using System;
+
 namespace EcoEkb.Backend.DataAccess.Domain.Interfaces;
 
 public interface IGuidEntity
