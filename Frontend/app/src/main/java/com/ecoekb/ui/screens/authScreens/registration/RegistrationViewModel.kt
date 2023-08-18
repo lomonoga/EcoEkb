@@ -3,9 +3,11 @@ package com.ecoekb.ui.screens.authScreens.registration
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ecoekb.domain.models.UserRegistrationData
 import com.ecoekb.domain.usecase.UserUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,13 +43,15 @@ class RegistrationViewModel @Inject() constructor(
 
     fun checkEqualsPassword() : Boolean {
         return if (password.value == passwordDuplicate.value) {
-            useCase.registrationUser(UserRegistrationData(
-                firstName = firstName.value,
-                secondName = secondName.value,
-                surName = surName.value,
-                email = email.value,
-                password = password.value
-            ))
+            viewModelScope.launch {
+                useCase.registrationUser(UserRegistrationData(
+                    firstName = firstName.value,
+                    secondName = secondName.value,
+                    surName = surName.value,
+                    email = email.value,
+                    password = password.value
+                ))
+            }
             true
         } else {
             false

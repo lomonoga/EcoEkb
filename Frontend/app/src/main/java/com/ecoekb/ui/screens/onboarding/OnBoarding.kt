@@ -28,7 +28,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.ecoekb.ui.screens.navigation.Screens
+import com.ecoekb.ui.navigation.Screens
 
 
 import kotlinx.coroutines.launch

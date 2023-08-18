@@ -10,7 +10,7 @@ import javax.inject.Inject
 class UserUsecase @Inject constructor(
     private val repository: IAuthRepository
 ) {
-    fun loginUserByCredits(userCredits: UserCreditsModel) : AuthTokens? {
+    suspend fun loginUserByCredits(userCredits: UserCreditsModel) : AuthTokens? {
         val response: ApiResponse<AuthTokens> = repository.userLogin(userCredits)
 
         return if (response is ApiResponse.Success) {
@@ -20,7 +20,7 @@ class UserUsecase @Inject constructor(
         }
     }
 
-    fun registrationUser(userRegistrationData: UserRegistrationData) : Boolean {
+    suspend fun registrationUser(userRegistrationData: UserRegistrationData) : Boolean {
         val response: ApiResponse<Boolean> = repository.userRegistration(userRegistrationData)
 
         return response is ApiResponse.Success

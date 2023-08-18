@@ -24,7 +24,8 @@ fun InputField(
     placeholder: String,
     isError: State<Boolean> = mutableStateOf(false),
     colorBorder: Color = MaterialTheme.colorScheme.secondary,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    modifier: Modifier = Modifier
 ){
     OutlinedTextField(
         value = value.value,
@@ -37,7 +38,7 @@ fun InputField(
             )
         },
         keyboardOptions = keyboardOptions,
-        modifier = Modifier
+        modifier = modifier
             .padding(
                 top = 16.dp
             )

@@ -8,6 +8,7 @@ import com.ecoekb.domain.models.AuthTokens
 import com.ecoekb.domain.models.UserCreditsModel
 import com.ecoekb.domain.usecase.UserUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,29 +24,30 @@ class AuthViewModel @Inject constructor(
 
     val status: MutableState<Status> = mutableStateOf(Status.SUCCESS)
 
+    val loginCorrect = mutableStateOf(false)
+
     fun checkCorrectCredits() : Boolean {
         correctEmail.value = email.value == ""
         correctPassword.value = password.value == ""
         return !correctEmail.value && !correctPassword.value
     }
 
-    fun loginUserByCredits() : Boolean {
+    fun loginUserByCredits() {
         status.value = Status.WAIT
-        val authTokens: AuthTokens? = useCase.loginUserByCredits(
-            UserCreditsModel(email.value, password.value)
-        )
+        runBlocking {
+            val authTokens: AuthTokens? = useCase.loginUserByCredits(
+                UserCreditsModel(email.value, password.value)
+            )
 
-        if (authTokens == null) {
-            Log.d("AUTH_VM", "2")
-            status.value = Status.ERROR
-            return false
-        } else {
-            Log.d("AUTH_VM", "3")
-            status.value = Status.SUCCESS
-            return true
+            if (authTokens == null) {
+                status.value = Status.ERROR
+                loginCorrect.value = false
+            } else {
+                status.value = Status.SUCCESS
+                loginCorrect.value = true
+            }
         }
     }
-
 }
 
 

@@ -7,7 +7,7 @@ import com.ecoekb.domain.models.UserRegistrationData
 
 interface IAuthRepository {
 
-    fun userLogin(userCreditsModel: UserCreditsModel) : ApiResponse<AuthTokens>
+    suspend fun userLogin(userCreditsModel: UserCreditsModel) : ApiResponse<AuthTokens>
 
-    fun userRegistration(userRegistrationData: UserRegistrationData) : ApiResponse<Boolean>
+    suspend fun userRegistration(userRegistrationData: UserRegistrationData) : ApiResponse<Boolean>
 }

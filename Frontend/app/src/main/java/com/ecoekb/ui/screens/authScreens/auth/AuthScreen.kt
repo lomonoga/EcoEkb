@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ecoekb.ui.composeble.InputField
-import com.ecoekb.ui.screens.navigation.Screens
+import com.ecoekb.ui.navigation.Screens
 
 @Composable
 fun AuthScreen(
@@ -35,6 +36,8 @@ fun AuthScreen(
 
     val correctEmail = remember { viewModel.correctEmail }
     val correctPassword = remember { viewModel.correctPassword }
+
+    val loginCorrect = remember { viewModel.loginCorrect }
 
     Box(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
@@ -98,10 +101,7 @@ fun AuthScreen(
                     Button(
                         onClick = {
                             if (viewModel.checkCorrectCredits()) {
-                                val answer = viewModel.loginUserByCredits()
-                                if (answer) {
-                                    navController.navigate(Screens.Registration.route)
-                                }
+                                viewModel.loginUserByCredits()
                             } },
                         modifier = Modifier
                             .padding(16.dp)
@@ -114,6 +114,11 @@ fun AuthScreen(
                 }
 
             }
+        }
+    }
+    if (loginCorrect.value){
+        LaunchedEffect(true) {
+            navController.navigate(Screens.RequestsList.route)
         }
     }
 }
