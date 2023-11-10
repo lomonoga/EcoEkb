@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using EcoEkb.Backend.Application.Handlers.Users;
 using MediatR;
 using Microsoft.AspNetCore.Http;

@@ -1,8 +1,4 @@
 ﻿using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
-using EcoEkb.Backend.Application.Common.DTO;
-using EcoEkb.Backend.Application.Common.DTO.Requests;
 using EcoEkb.Backend.Application.Common.DTO.User.Requests;
 using EcoEkb.Backend.Application.Common.DTO.User.Responses;
 using EcoEkb.Backend.DataAccess;

@@ -1,10 +1,7 @@
 ﻿using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Exception;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
-using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EcoEkb.Backend.Application.Common.DTO.User;
+﻿namespace EcoEkb.Backend.Application.Common.DTO.User;
 
 public class UserId
 {

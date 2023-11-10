@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using EcoEkb.Backend.DataAccess;
+﻿using EcoEkb.Backend.DataAccess;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

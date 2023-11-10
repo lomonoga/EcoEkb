@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EcoEkb.Backend.DataAccess.Domain.Exception;
+﻿namespace EcoEkb.Backend.DataAccess.Domain.Exception;
 
 public sealed record UserFriendlyExceptionResponse(IEnumerable<string?> Errors)
 {

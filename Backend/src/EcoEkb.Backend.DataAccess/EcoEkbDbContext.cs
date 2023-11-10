@@ -1,11 +1,7 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using EcoEkb.Backend.DataAccess.Domain.Interfaces;
 using EcoEkb.Backend.DataAccess.Domain.Models;
 using EcoEkb.Backend.DataAccess.Domain.Services.Interfaces;
 using EcoEkb.Backend.DataAccess.Models;
-using EcoEkb.Backend.DataAccess.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcoEkb.Backend.DataAccess;
@@ -22,8 +18,7 @@ public class EcoEkbDbContext : DbContext
 
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<Petition> Petitions { get; set; } = default!;
-
-    public DbSet<Event> Events { get; set; } = default!;
+    
     public DbSet<Company> Companies { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder builder)

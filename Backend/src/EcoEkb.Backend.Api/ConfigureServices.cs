@@ -1,10 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace EcoEkb.Backend.Api;
 
